@@ -32,21 +32,46 @@ const main = async () => {
     const balance = await provider.getBalance(WALLET_ADDRESS);
     console.log("RON Balance: " + ethers.utils.formatEther(balance));
 
-    const code = await provider.getCode(contractAddress);
-    //console.log(code);
-
+    // get current gas price
     const gas = await provider.getGasPrice();
     console.log("Gas Price: " + ethers.utils.formatEther(gas));
 
-    // to be tested
-    const restake = await connectedContract.restakeRewards();
-    await restake.wait();
-    console.log(restake);
-    // buildTransaction({'gas': 492874, 'gasPrice': 0, 'nonce': nonce})
+    // first restake on launch
+    const successful = await restake();
 
+    // restake successful, set schedule
+    if (successful) {
+      console.log("Restake Done!");
+    }
   } catch (error) {
     console.error(error);
   }
+};
+
+const restake = async () => {
+  try {
+    const randomGas = 400000 + (Math.random() * (99999 - 10000) + 10000);
+    const overrideOptions = {
+      gasLimit: Math.floor(randomGas),
+    };
+
+    // to be tested
+    const restake = await connectedContract.restakeRewards(overrideOptions);
+    const receipt = await restake.wait();
+
+    if (receipt) {
+      console.log("Restake successful");
+      console.log(restake);
+      console.log(receipt);
+
+      return true;
+    }
+  } catch (error) {
+    console.error(error);
+    return false;
+  }
+
+  return false;
 };
 
 main();
