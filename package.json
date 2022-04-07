@@ -23,6 +23,7 @@
   "homepage": "https://github.com/AzureKn1ght/Crabada-Mining-Bot#readme",
   "dependencies": {
     "dotenv": "^16.0.0",
-    "ethers": "^5.6.2"
+    "ethers": "^5.6.2",
+    "node-schedule": "^2.1.0"
   }
 }
