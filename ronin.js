@@ -87,6 +87,7 @@ const scheduleNext = async (nextDate) => {
 
   // schedule next restake
   scheduler.scheduleJob(nextDate, restake);
+  return;
 };
 
 main();
